@@ -1,0 +1,15 @@
+[project]
+name = "numerical-engineering-course"
+version = "0.1.0"
+description = "A notebook-first numerical engineering teaching course"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24,<3",
+    "scipy>=1.10,<2",
+    "matplotlib>=3.7,<4",
+    "jupyterlab>=4,<5",
+]
+
+[tool.uv]
+package = false
