@@ -121,8 +121,8 @@ the filenames below define the current order.
 | [04 · Linear dynamics and DAF](pyscripts/04_linear_dynamics_daf.py) | SDOF response, dynamic amplification, phase, transients, free decay | Harmonic amplitude and phase, energy |
 | [05 · Metocean statistics](pyscripts/05_stats_metocean.py) | Site 14 wind–Hs–Tp model, conditional density heatmaps, 50-year IFORM surface and wind slices | Captured probability, invalid model domain, transform round trips |
 | [06 · JONSWAP wave generation](pyscripts/06_wave_generation_jonswap.py) | Station histories, long-crested 2D and directional 3D animations, HTML/CSV export | Spectral energy and space-time consistency |
-| [07 · Short-term extremes](pyscripts/07_short_term_extremes.py) | Gaussian dynamic response, positive record maxima, Gumbel and peak approximations | PSD variance, upcrossings, bootstrap, one-record time refinement |
-| [08 · Long-term distributions](pyscripts/08_long_term_distributions.py) | State-conditioned response, mixtures, block and annual maxima, return levels | Inverse sampling and annual CDF identity |
+| [07 · Short-term extremes](pyscripts/07_short_term_extremes.py) | JONSWAP waves, illustrative semi-rig heave, three-hour maxima, Gumbel and Rayleigh/Rice peak models | Spectral variance, upcrossing/peak rates, probability identities, one-record time refinement |
+| [08 · Long-term distributions](pyscripts/08_long_term_distributions.py) | Semi-rig heave, Weibull–lognormal Hs–Tp grid and 3D joint density, three-hour Rayleigh mixtures, Monte Carlo and four pooled fits, annual extension | Mixture ECDF agreement, inverse sampling, probability normalization and annual CDF identity |
 
 Prerequisite: variables, loops, functions, and basic differentiation. Matrices
 and probability are introduced in the first two lessons. Mechanics examples use
@@ -257,9 +257,33 @@ The DAF and response-extreme lessons use a single oscillator; the 3D truss lesso
 includes multiple degrees of freedom and natural modes. A useful extension is
 modal reduction of a beam with a consistent mass matrix.
 
-The short- and long-term response examples use an artificial Gaussian force PSD,
-not measured environmental data or a wave-force model. They run independently
-of the JONSWAP wave-generation script; no wave-to-force conversion connects them.
+The short-term example (script 07) uses a JONSWAP wave spectrum, an illustrative
+depth-attenuated wave-force transfer function, and a single-DOF semi-rig heave model.
+Its rectangular sketch and physical parameters are teaching assumptions, not calibrated
+hydrodynamics. Five independent three-hour heave histories in separate panels illustrate the
+response. After the static semi-rig figure, a two-minute wave/heave animation uses the
+same coefficients as the first realization; it plays inline in Jupyter with JavaScript
+controls or in a Matplotlib GUI window. Wave elevation and rig heave share physical
+units without motion amplification. The 300 independent full three-hour records supply
+maximum upward heave for comparison with Gumbel,
+Rayleigh peak maxima, and bandwidth-dependent Rice local-peak maxima. The latter two
+use different effective counts: zero-upcrossing cycles and all local maxima, respectively.
+Rice here is the Gaussian local-maximum law, not the noncentral Rician amplitude law.
+Both powered peak models approximate successive peaks as independent.
+The long-term example (script 08) uses the same semi-rig, JONSWAP spectra, and
+three-hour duration on a weighted 10 × 10 grid. Independent Hs and Tp follow,
+respectively, a Weibull law (shape 2, scale 5 m) and a lognormal law (median 14 s,
+log-space standard deviation 0.2). The grid spans the 0.1%–99.9% marginal
+quantiles, captures 99.6004% of joint probability, and uses normalized exact bin
+masses as weights with midpoint sea states. A 3D surface and contours show the
+joint density conditional on this box. It sums conditional Rayleigh cycle-maximum
+laws and draws 50,000 Monte Carlo maxima by selecting a state and inverting its
+conditional law. Histogram, ECDF, and log-survival plots compare the analytical
+mixture with pooled Gumbel, two- and three-parameter Weibull, and lognormal fits; tables
+compare q50, q90, and q99. This sampling verifies the mixture construction, not
+the Rayleigh approximation against simulated time histories. A compact annual
+extension aggregates the analytical mixture over 2,920 independent blocks.
+Both scripts run independently of the JONSWAP wave-generation script.
 Normally distributed Fourier coefficients give a Gaussian ensemble; fixed-amplitude random-phase synthesis would not
 be exactly Gaussian. The FFT synthesis is periodic with the record duration and approximates a continuous spectrum.
 Vary duration, time step, spectral bandwidth, and number of records to assess the numerical and statistical effects.
@@ -267,8 +291,8 @@ The time-grid check in script 07 is one illustrative record, not a full converge
 
 Long-term states are synthetic. Independent equal-duration blocks are a teaching assumption. Weather persistence,
 serial dependence, unequal state durations, nonstationarity, and model uncertainty need additional treatment.
-The annual tail extrapolation is not validated by the inverse-sampling check. A robust extension compares Gumbel and GEV,
-bootstraps within each state, studies dependence, and uses substantially more tail evidence.
+The annual tail extrapolation is not validated by the inverse-sampling check. Further extensions
+include full-history Monte Carlo, bootstrapping within each state, dependence modeling, and substantially more tail evidence.
 
 ## Instructor prompts
 
